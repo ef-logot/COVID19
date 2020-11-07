@@ -1,0 +1,35 @@
+mydata <- read.csv("https://covid.ourworldindata.org/data/owid-covid-data.csv", na.strings = "", fileEncoding = "UTF-8-BOM")
+
+
+gr<-mydata[mydata$location=="Greece",]
+gr$date<-as.Date(gr$date, "%Y-%m-%d")
+
+sw<-mydata[mydata$location=="Sweden",]
+sw$date<-as.Date(sw$date, "%Y-%m-%d")
+
+# ##sapply(mydata, variable.names)#                             THIS IS USEFUL
+
+
+
+gr$new_cases_per_million_per_test <-gr$new_cases_per_million/gr$new_tests
+
+
+sw$new_cases_per_million_per_test <- sw$new_cases_per_million/sw$new_tests
+
+plot(new_cases_per_million_per_test ~ date, gr, xaxt = "n", type = "p")
+grid()
+axis(1, gr$date, format(gr$date, "%b %d"), cex.axis = .7)
+
+
+plot(new_cases_per_million_per_test ~ date, sw, xaxt = "n", type = "p")
+axis(1, sw$date, format(sw$date, "%b %d"), cex.axis = .7)
+grid()
+
+### Plot recent
+plot(new_cases_per_million_per_test[(nrow(gr)%/%2):nrow(gr)] ~ date[(nrow(gr)%/%2):nrow(gr)], gr, xaxt = "n", type = "p")
+axis(1, gr$date[(nrow(gr)%/%2):nrow(gr)], format(gr$date[(nrow(gr)%/%2):nrow(gr)], "%b %d"), cex.axis = .7)
+grid()
+
+plot(new_cases_per_million_per_test[(nrow(sw)%/%2):nrow(sw)] ~ date[(nrow(sw)%/%2):nrow(sw)], sw, xaxt = "n", type = "p")
+axis(1, sw$date[(nrow(sw)%/%2):nrow(sw)], format(sw$date[(nrow(sw)%/%2):nrow(sw)], "%b %d"), cex.axis = .7)
+grid()
